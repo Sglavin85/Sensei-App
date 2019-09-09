@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sensei.Models.ViewModels;
 
 namespace Sensei.Data
 {
@@ -32,6 +33,9 @@ namespace Sensei.Data
 
             #endregion
         }
+
+
+        public DbSet<Sensei.Models.ViewModels.LoginViewModel> LoginViewModel { get; set; }
     }
 
 }

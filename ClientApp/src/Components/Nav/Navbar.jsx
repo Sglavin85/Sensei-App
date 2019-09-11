@@ -37,7 +37,7 @@ class Navbar extends Component {
                                     <Link className="nav-link" to="/profile">Profile</Link>
                                 </Menu.Item>
                                 <Menu.Item key="/login">
-                                    <Link className="nav-link" to="/login" onClick={localStorage.clear()}>Logout</Link>
+                                    <Link className="nav-link" to="/auth/login" onClick={this.props.logout}>Logout</Link>
                                 </Menu.Item>
                             </Menu>
                             ) : null}

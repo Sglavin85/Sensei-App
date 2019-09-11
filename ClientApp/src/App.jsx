@@ -15,17 +15,25 @@ const { Header, Content, Footer } = Layout
 
 class Sensei extends Component {
 
-    isAuthenticated = () => localStorage.getItem("Token") !== null;
+    state = {
+        userIsLoggedIn : false
+    }
+
+    isAuthenticated = () => sessionStorage.getItem("Token") !== null;
     
     login = (user) => {
         API.login(user)
-        .then(response => {
-            if(response.Token !== null)
-            {
-                localStorage.setItem("Token", JSON.stringify(response))
+        .then(response => {            
+            if(response.token !== undefined)
+            {               
+                let token = JSON.stringify(response)
+                sessionStorage.setItem("Token", token)
             }
         })
-        .then(this.props.history.push('/home'))
+        .then(_reply => {
+            this.setState({userIsLoggedIn: true})
+            this.props.history.push('/home')
+        })
     }
 
     register = (user) => {
@@ -33,19 +41,23 @@ class Sensei extends Component {
         .then(response => {
             if(response.Token !== null)
             {
-                localStorage.setItem("Token", JSON.stringify(response))
+                sessionStorage.setItem("Token", JSON.stringify(response))
             }
         })
         .then(_complete => {
             this.login(user)
         })
     }
-
+    
+    logout = () => {
+        this.setState({userIsLoggedIn: false})
+        sessionStorage.clear()
+    }
     render() {
         return (
             < Layout className = "layout" >
                 <Header>
-                    {/* <Navbar /> */}
+                    <Navbar user={this.state.userIsLoggedIn} logout={this.logout} />
                 </Header>
             <Content>
 

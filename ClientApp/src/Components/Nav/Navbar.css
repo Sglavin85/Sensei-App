@@ -1,0 +1,27 @@
+#topNav {
+    display: flex;
+    justify-content: space-between;
+}
+
+#logoContainer img {
+    max-height: 200px;
+    margin-top: -45px;
+}
+
+.nav-logo {
+    position: absolute;
+    transition: all 2s ease;
+}
+
+.logo {
+    margin-right: 20px;
+}
+
+#linksContainer {
+    margin-top: 25px;
+    margin-right: 6vw;
+}
+
+.register {
+    margin-left: -50px;
+}

@@ -30,14 +30,14 @@ export default class Register extends Component {
             <>
                 <Row type="flex" justify="center" align="middle">
                     <Col>        
-                            <h1 className="login">LOG-IN</h1>
+                            <h1 className="login">REGISTER</h1>
                             <Form onSubmit={this.submit} className="login-form" layout="vertical">
 
                                 <Form.Item wrapperCol={{ col: 4 }} className="usernameBox" >
                                     <Input
                                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                         placeholder="E-Mail"
-                                        id="email"
+                                        id="username"
                                         onChange={this.handleFieldChange}
                                     />
                                 </Form.Item>
@@ -60,7 +60,8 @@ export default class Register extends Component {
                                     </Row>
                                     <Row type="flex" justify="center" align="middle" className="selectButtons">
                                         <Col offset={6}>
-                                            <Link className="reg-link" to="/auth/login">Go Back</Link>
+                                        <span className="register">Already a member? </span>
+                                            <Link className="reg-link" to="/auth/login">Log-In</Link>
                                         </Col>
                                     </Row>
                                 </Form.Item>

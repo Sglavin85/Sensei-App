@@ -38,13 +38,7 @@ class Sensei extends Component {
 
     register = (user) => {
         API.register(user)
-        .then(response => {
-            if(response.Token !== null)
-            {
-                sessionStorage.setItem("Token", JSON.stringify(response))
-            }
-        })
-        .then(_complete => {
+        .then(_response => {
             this.login(user)
         })
     }
@@ -53,6 +47,7 @@ class Sensei extends Component {
         this.setState({userIsLoggedIn: false})
         sessionStorage.clear()
     }
+    
     render() {
         return (
             < Layout className = "layout" >
@@ -67,7 +62,7 @@ class Sensei extends Component {
                         />
                     }}
                     />
-                    <Route exact path="/register" render={(props) => {
+                    <Route exact path="/auth/register" render={(props) => {
                         return <Register {...props}
                         register = {this.register}
                         />

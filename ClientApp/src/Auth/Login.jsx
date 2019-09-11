@@ -30,7 +30,7 @@ export default class Login extends Component {
         return (
             <div>
                 <Row type="flex" justify="center" align="middle">
-                    <Col span={8}>        
+                    <Col>        
                             <h1 className="login">LOG-IN</h1>
                             <Form onSubmit={this.submit} className="login-form" layout="vertical">
                                 <Form.Item wrapperCol={{ col: 4 }} className="usernameBox" >
@@ -61,7 +61,7 @@ export default class Login extends Component {
                                     <Row type="flex" justify="center" align="middle" className="selectButtons">
                                         <Col offset={6}>
                                             <span className="register">Not a member? </span>
-                                            <Link className="reg-link" to="/register">Register Now</Link>
+                                            <Link className="reg-link" to="/auth/register">Register Now</Link>
                                         </Col>
                                     </Row>
                                 </Form.Item>

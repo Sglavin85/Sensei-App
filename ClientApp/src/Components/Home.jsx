@@ -6,10 +6,19 @@ import Cards from './Games/Cards/Cards'
 import './home.css'
 
 export default class Home extends Component {
+    state = {
+        blobListen: false
+    }
+
+
     render() {
         return (
             <>
-                            <Blob />
+                <div className="box" 
+                onMouseEnter={() => this.setState({blobListen: true})} 
+                onMouseLeave={() => this.setState({blobListen: false})}>
+                            <Blob listening={this.state.blobListen}/>
+                </div>
             </>
         )
     }

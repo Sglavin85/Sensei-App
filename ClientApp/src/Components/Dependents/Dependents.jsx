@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Button, Divider, Modal } from 'antd'
+import { Row, Col, Table, Button, Divider, Modal, Spin } from 'antd'
+import EditModal from './EditDependentModal'
+import CreateModal from './CreateDependentModal'
 import API from './DependentManager';
 
 const { confirm } = Modal;

@@ -1,0 +1,21 @@
+
+  .snake  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+  }
+  
+  .snake > div {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    background: rgb(184, 240, 220);
+    border-radius: 50%;
+  }
+  
+  .snake > div:not(:first-child) {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  

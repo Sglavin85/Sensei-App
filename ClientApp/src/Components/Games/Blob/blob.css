@@ -6,7 +6,7 @@
   position: absolute;
   will-change: transform;
   border-radius: 50%;
-  background: #A7F2D7;
+  background: rgb(193, 240, 223);
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   opacity: 0.6;
 }

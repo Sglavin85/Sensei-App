@@ -5,12 +5,11 @@
 
 #logoContainer img {
     max-height: 200px;
-    margin-top: -45px;
+    margin-top: -20px;
 }
 
-.nav-logo {
-    position: absolute;
-    transition: all 2s ease;
+.nav-link {
+    font-size: 2.5em;
 }
 
 .logo {
@@ -18,10 +17,14 @@
 }
 
 #linksContainer {
-    margin-top: 25px;
-    margin-right: 6vw;
+    height: 100px;
+    margin-top: 50px;
 }
 
-.register {
-    margin-left: -50px;
+#linksContainer > :first-child {
+    background-color: rgb(97, 97, 97);
+}
+
+#linksContainer > :first-child > li > a {
+    color: #A7F2D7;
 }

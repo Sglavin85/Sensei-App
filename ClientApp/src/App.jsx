@@ -5,7 +5,7 @@ import Navbar from './Components/Nav/Navbar'
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Home from './Components/Home';
-import Profile from './Components/Profile';
+import Depedents from './Components/Dependents/Dependents';
 import { Layout } from 'antd';
 import { Route, Redirect } from 'react-router-dom';
 import API from './Auth/UserManager';
@@ -15,9 +15,6 @@ const { Header, Content, Footer } = Layout
 
 class Sensei extends Component {
 
-    state = {
-        userIsLoggedIn : false
-    }
 
     isAuthenticated = () => sessionStorage.getItem("Token") !== null;
     
@@ -51,8 +48,8 @@ class Sensei extends Component {
     render() {
         return (
             < Layout className = "layout" >
-                <Header>
-                    <Navbar user={this.state.userIsLoggedIn} logout={this.logout} />
+                <Header id="head">
+                    <Navbar isAuthenticated={this.isAuthenticated} logout={this.logout} />
                 </Header>
             <Content>
 
@@ -82,7 +79,7 @@ class Sensei extends Component {
 
                     <Route exact path="/profile" render={(props) => {
                         if (this.isAuthenticated()) {
-                            return <Profile {...props} />
+                            return <Depedents {...props} />
                         } else {
                             return <Redirect to="/auth/login" {...props}
                             />

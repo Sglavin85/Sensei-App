@@ -28,7 +28,7 @@ class Navbar extends Component {
                             <img src={logo} alt="logo" className="nav-logo" />
                         </div>
                         <div id="linksContainer">
-                            {!!this.props.user ? (
+                            {!!this.props.isAuthenticated ? (
                             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">                           
                                 <Menu.Item key="/home">
                                     <Link className="nav-link" to="/home">Home</Link>
@@ -36,7 +36,7 @@ class Navbar extends Component {
                                 <Menu.Item key="/profile">
                                     <Link className="nav-link" to="/profile">Profile</Link>
                                 </Menu.Item>
-                                <Menu.Item key="/login">
+                                <Menu.Item key="/auth/login">
                                     <Link className="nav-link" to="/auth/login" onClick={this.props.logout}>Logout</Link>
                                 </Menu.Item>
                             </Menu>

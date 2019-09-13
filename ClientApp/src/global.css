@@ -4,8 +4,8 @@
 :root {
     --primary: #A7F2D7;
     --primary-v: #88BFBA;
-    --secondary: #9FEAF9;
+    --secondary: rgb(68, 101, 107);
     --secondary-v: #7AB3BF;
-    --surface: #DCE0D9;
+    --surface: rgb(97, 97, 97);
     --background: #F0F7EE;
 }

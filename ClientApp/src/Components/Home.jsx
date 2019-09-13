@@ -10,13 +10,6 @@ export default class Home extends Component {
         return (
             <>
                             <Blob />
-                <div className="gameContainer">
-                        <div className="hook box">
-                        </div>
-                        {/* <div className="snake box">
-                            <Snake />
-                        </div> */}
-                </div>
             </>
         )
     }

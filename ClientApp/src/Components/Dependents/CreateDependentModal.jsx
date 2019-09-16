@@ -13,7 +13,7 @@ export default class CreateModal extends Component {
             firstName: "",
             lastName: "",
             age: "",
-            gender: ""
+            gender: "male"
         }
     }
 
@@ -28,6 +28,7 @@ export default class CreateModal extends Component {
     }
 
     handleGenderChoice = (evt) => {
+        console.log(evt)
         this.setState({ gender: evt })
     }
 
@@ -56,10 +57,10 @@ export default class CreateModal extends Component {
                     <Col> <h1 className="login">Add A Player</h1>
                         <Form className="register-form" layout="vertical" labelCol={{ span: 8 }} wrapperCol={{ span: 20 }} >
                             <Form.Item label="First Name: ">
-                                <Input id="name" onChange={this.handleFieldChange} />
+                                <Input id="firstName" onChange={this.handleFieldChange} />
                             </Form.Item>
                             <Form.Item label="Last Name: ">
-                                <Input id="breed" onChange={this.handleFieldChange} />
+                                <Input id="lastName" onChange={this.handleFieldChange} />
                             </Form.Item>
                             <Form.Item label="Age: ">
                                 <Input id="age" onChange={this.handleFieldChange} />

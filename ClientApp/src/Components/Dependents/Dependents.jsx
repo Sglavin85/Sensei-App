@@ -1,29 +1,20 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Button, Divider, Modal, Spin } from 'antd'
+import { Row, Col, Table, Button, Divider, Modal, Popconfirm, Spin } from 'antd'
 import EditModal from './EditDependentModal'
 import CreateModal from './CreateDependentModal'
 import API from './DependentManager';
+import { thisTypeAnnotation } from '@babel/types';
 
 const { confirm } = Modal;
 
 export default class Dependents extends Component {
 
   state = {
-      isTableReady: false,
+      isTableReady: true,
       createModalVis: false,
       editModalVis: false,
       deleteConfirm: false,
-      dependents: []
     }
-
-  componentDidMount() {
-    API.getAllDependents()
-            .then(response => {
-              this.setState({dependents: response}, () => {
-                this.setState({isTableReady: true})
-              })
-            })
-  }
 
   columns = [
         {
@@ -38,26 +29,33 @@ export default class Dependents extends Component {
         },
         {
           title: 'Age',
-          dataIndex: 'Age',
-          key: 'Age',
+          dataIndex: 'age',
+          key: 'age',
         },
         {
           title: 'Gender',
-          dataIndex: 'Gender',
-          key: 'Gender',
+          dataIndex: 'gender',
+          key: 'gender',
         },
         {
             title: 'Action',
             key: 'action',
-            render: () => (
+            render: (record) => (
               <span>
-                <a onClick={this.handleEdit}>Edit</a>
+                <a onClick={() => this.openEdit(record.id)}>Edit</a>
                 <Divider type="vertical" />
-                <a onClick={this.handleDelete}>Delete</a>
+                <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
+                   <a>Delete</a>
+                </Popconfirm>
               </span>
             )
           }
       ]
+
+  openEdit = (id) => {
+    const recordToEdit = this.props.dependents.find(record => record.id === id)
+    this.setState({recordToEdit}, () => this.setState({editModalVis: true}))
+  }
 
   modal = (modalName) => {
     const stateToChange = { [modalName]: true }
@@ -72,42 +70,37 @@ export default class Dependents extends Component {
     })
   }
 
-  showDeleteConfirm = () => {
-    confirm({
-      title: 'Are you sure delete this User?',
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk() {
-        API.deleteDependent()
-      }
-    }); 
+  handleDelete = (id) => {
+    const token = JSON.parse(sessionStorage.getItem("Token"))
+    API.deleteDependent(id, token) 
+    .then(_response => {
+      API.getAllDependents(token.token)
+        .then(response => {
+          this.props.setter("dependents", response)
+        })
+    })
   }
 
   handleCreateSubmit = (obj) => {
-    this.setState({isTableReady: false})
+    const token = JSON.parse(sessionStorage.getItem("Token"))
     this.cancelModal("createModalVis")
-    API.addDependent(obj)
+    API.addDependent(obj, token)
       .then(_response => {
-        API.getAllDependents()
+        API.getAllDependents(token.token)
           .then(response => {
-            this.setState({dependents: response}, () => {
-              this.setState({isTableReady: true})
-            })
+            this.props.setter("dependents", response)
           })
       })
   }
 
   handleEditSubmit = (obj) => {
-    this.setState({isTableReady: false})
+    const token = JSON.parse(sessionStorage.getItem("Token"))
     this.cancelModal("editModalVis")
-    API.editDependent(obj)
+    API.editDependent(obj, token)
       .then(_response => {
-        API.getAllDependents()
+        API.getAllDependents(token.token)
           .then(response => {
-            this.setState({dependents: response}, () => {
-              this.setState({isTableReady: true})
-            })
+            this.props.setter("dependents", response)
           })
       })
   }
@@ -117,12 +110,13 @@ export default class Dependents extends Component {
                 <>
                     <Row type="flex" justify="center">
                         <Col>
-                         {this.isTableReady ? 
+                        <h1>Player Manager</h1>
+                         {this.state.isTableReady ? 
                             <Table 
-                                dataSource={this.state.dependents} 
+                                rowKey={record => record.id}
+                                dataSource={this.props.dependents} 
                                 columns={this.columns}
-                                title={() => "Player Manager"}
-                                footer={() => <Button onClick={this.modal("createModalVis")}>Add Player</Button>}
+                                footer={() => <Button onClick={() => this.modal("createModalVis")}>Add Player</Button>}
                                 pagination={false}
                                 />
                             : <Spin size="large" />}
@@ -133,7 +127,7 @@ export default class Dependents extends Component {
                         vis={this.state.createModalVis}
                         submit={this.handleCreateSubmit}
                         cancel={this.cancelModal}
-                        UserId={this.props.User.Id}
+                        userId={this.props.userId}
                         update={this.updateDependent}
                     /> : null}
 
@@ -141,8 +135,7 @@ export default class Dependents extends Component {
                         vis={this.state.editModalVis}
                         submit={this.handleEditSubmit}
                         cancel={this.cancelModal}
-                        uid={this.props.dependent.uid}
-                        update={this.updateDependent}
+                        record={this.state.recordToEdit}
                     /> : null} 
 
                     {this.state.deleteConfirm}

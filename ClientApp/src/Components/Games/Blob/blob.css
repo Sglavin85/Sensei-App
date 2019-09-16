@@ -2,6 +2,13 @@
   display: none;
 }
 
+#blobBox {
+  width: 93%;
+  height: 93%;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
 .hooks-main > div {
   position: absolute;
   will-change: transform;
@@ -9,6 +16,8 @@
   background: rgb(193, 240, 223);
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   opacity: 0.6;
+  margin-top: -260px;
+  margin-left: -50px;
 }
 
 .hooks-main > div:nth-child(1) {

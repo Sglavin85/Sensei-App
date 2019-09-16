@@ -19,13 +19,13 @@ export default function Blob(props) {
       </svg>
       
       {props.listening ? 
-      <div className="hooks-main box" onMouseMove={e => set({ xy: [e.clientX, e.clientY] })}>
+      <div className="hooks-main" id="blobBox" onMouseMove={e => set({ xy: [e.clientX, e.clientY] })}>
         {trail.map((props, index) => (
           <animated.div key={index} style={{ transform: props.xy.interpolate(trans) }} />
         ))}
       </div>
       :
-      <div className="hooks-main box">
+      <div className="hooks-main" id="blobBox">
         {trail.map((props, index) => (
           <animated.div key={index} style={{ transform: props.xy.interpolate(trans) }} />
         ))}

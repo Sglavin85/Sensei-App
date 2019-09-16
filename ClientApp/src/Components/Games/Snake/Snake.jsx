@@ -3,7 +3,7 @@ import { useTrail, animated, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 import './snake.css'
 
-export default function App() {
+export default function App(props) {
     const [springs, set] = useTrail(40, () => ({
         x: 0,
         y: 0,
@@ -17,11 +17,14 @@ export default function App() {
         }))
     })
     
-    return springs.map((props, index) =>
+    return <div className="snake">
+        {springs.map((styles, index) =>
     index === 0 ? (
-        <animated.div {...bind()} key={index} style={props} />
+        props.listening ? <animated.div {...bind()} key={index} style={styles} /> : <animated.div key={index} style={styles} /> 
         ) : (
-            <animated.div key={index} style={props} />
+            <animated.div key={index} style={styles} />
             )
             )
         }
+            </div>
+}

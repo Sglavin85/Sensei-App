@@ -1,14 +1,37 @@
 .gameContainer {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items:flex-start;
+    justify-content: space-between;
     height: 100%;
+    width: auto;
 }
 
-.box {
-    border: 5px red solid;
-    height: 500px;
-    width: 500px;
+main {
+    height: 1000px;
+}
+
+.game {
     margin-top: 20px;
+    min-width: 50%;
+}
+
+.g1 {
+    margin-left: 10px
+}
+
+.g2 {
+    margin-right: 50px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+wired-card {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    width: 97%;
+    height: 600px;
+    margin-top: 20px
 }

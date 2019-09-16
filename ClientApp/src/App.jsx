@@ -9,26 +9,48 @@ import Depedents from './Components/Dependents/Dependents';
 import { Layout } from 'antd';
 import { Route, Redirect } from 'react-router-dom';
 import API from './Auth/UserManager';
+import DependentAPI from './Components/Dependents/DependentManager'
+import Decoder from 'jwt-decode';
 
 
 const { Header, Content, Footer } = Layout
 
 class Sensei extends Component {
-
+    state = {
+        userId: "",
+        dependents: []
+    }
 
     isAuthenticated = () => sessionStorage.getItem("Token") !== null;
+
+    componentDidMount() {
+        if(!!this.isAuthenticated()){
+            const token = JSON.parse(sessionStorage.getItem("Token"))
+            const decocededToken = Decoder(token.token)
+            DependentAPI.getAllDependents(token.token)
+            .then(response => {
+                const parsedDependents = Object.values(response)
+                this.setState({dependents: parsedDependents, userId: decocededToken.sub[1]})
+            })
+        }
+    }
     
     login = (user) => {
         API.login(user)
         .then(response => {            
             if(response.token !== undefined)
             {               
-                let token = JSON.stringify(response)
+                const token = JSON.stringify(response)
                 sessionStorage.setItem("Token", token)
+                const decocededToken = Decoder(response.token)
+                DependentAPI.getAllDependents(response.token)
+                .then(response => {
+                    const parsedDependents = Object.values(response)
+                    this.setState({dependents: parsedDependents, userId: decocededToken.sub[1]})
+                })
             }
         })
-        .then(_reply => {
-            this.setState({userIsLoggedIn: true})
+        .then(_response => {
             this.props.history.push('/home')
         })
     }
@@ -44,12 +66,16 @@ class Sensei extends Component {
         this.setState({userIsLoggedIn: false})
         sessionStorage.clear()
     }
+
+    updateState = (stateToUpdate, update) => {
+        this.setState({[stateToUpdate]: update})
+    }
     
     render() {
         return (
             < Layout className = "layout" >
                 <Header id="head">
-                    <Navbar isAuthenticated={this.isAuthenticated} logout={this.logout} />
+                    <Navbar isAuthenticated={this.isAuthenticated} dependents={this.state.dependents} logout={this.logout} />
                 </Header>
             <Content>
 
@@ -79,7 +105,7 @@ class Sensei extends Component {
 
                     <Route exact path="/profile" render={(props) => {
                         if (this.isAuthenticated()) {
-                            return <Depedents {...props} />
+                            return <Depedents {...props} dependents={this.state.dependents} userId={this.state.userId} setter={this.updateState} />
                         } else {
                             return <Redirect to="/auth/login" {...props}
                             />

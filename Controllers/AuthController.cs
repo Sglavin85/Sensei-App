@@ -31,8 +31,8 @@ namespace JwtAuthentication.Controllers
         {
             var user = new IdentityUser
             {
-                Email = model.Email,
-                UserName = model.Email,
+                Email = model.Username,
+                UserName = model.Username,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -50,8 +50,9 @@ namespace JwtAuthentication.Controllers
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var claim = new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
+                var claims = new[] {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id)
                 };
                 var signinKey = new SymmetricSecurityKey(
                   Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
@@ -59,6 +60,7 @@ namespace JwtAuthentication.Controllers
                 int expiryInMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryInMinutes"]);
 
                 var token = new JwtSecurityToken(
+                  claims: claims,
                   issuer: _configuration["Jwt:Site"],
                   audience: _configuration["Jwt:Site"],
                   expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),

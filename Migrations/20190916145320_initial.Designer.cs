@@ -10,8 +10,8 @@ using Sensei.Data;
 namespace Sensei.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190909155520_first-db")]
-    partial class firstdb
+    [Migration("20190916145320_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -210,13 +210,11 @@ namespace Sensei.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Dependents");
                 });
@@ -264,6 +262,21 @@ namespace Sensei.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GameTypes");
+                });
+
+            modelBuilder.Entity("Sensei.Models.ViewModels.LoginViewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LoginViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -315,7 +328,7 @@ namespace Sensei.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sensei.Models.Game", b =>

@@ -71,7 +71,7 @@ namespace Sensei.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Dependents

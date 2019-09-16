@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sensei.Migrations
 {
-    public partial class firstdb : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -72,6 +72,20 @@ namespace Sensei.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GameTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoginViewModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Username = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoginViewModel", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,19 +200,18 @@ namespace Sensei.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: false),
-                    Gender = table.Column<string>(nullable: true),
-                    UserId1 = table.Column<string>(nullable: true)
+                    Gender = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Dependents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Dependents_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Dependents_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -274,9 +287,9 @@ namespace Sensei.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dependents_UserId1",
+                name: "IX_Dependents_UserId",
                 table: "Dependents",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_TypeId",
@@ -309,6 +322,9 @@ namespace Sensei.Migrations
 
             migrationBuilder.DropTable(
                 name: "Games");
+
+            migrationBuilder.DropTable(
+                name: "LoginViewModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

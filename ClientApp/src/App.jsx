@@ -21,6 +21,11 @@ class Sensei extends Component {
         dependents: []
     }
 
+    setTheme(dependent) {
+        let root = document.documentElement;
+        root.style.setProperty("--fav-color", this.state.favoriteColor)
+    }
+
     isAuthenticated = () => sessionStorage.getItem("Token") !== null;
 
     componentDidMount() {
@@ -30,8 +35,7 @@ class Sensei extends Component {
             DependentAPI.getAllDependents(token.token)
             .then(response => {
                 const parsedDependents = Object.values(response)
-                this.setState({dependents: parsedDependents, userId: decocededToken.sub[1]})
-            })
+                this.setState({dependents: parsedDependents, userId: decocededToken.sub[1]})            })
         }
     }
     

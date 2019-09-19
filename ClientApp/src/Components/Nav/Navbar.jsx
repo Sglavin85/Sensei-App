@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../../Images/logo_transparent_green.png';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
@@ -8,43 +7,72 @@ import './Navbar.css';
 
 
 class Navbar extends Component {
+
+    constructor(props) {
+        super(props);
+        this.selectionRef = React.createRef();
+        this.logoRef = React.createRef();
+    }
+    
     state = {
         currentPlayer: "",
         user: sessionStorage.getItem("Token")
-
     }
 
-    handleSelection = (e) => {
-        console.log("Test")
-        console.log(e)
+    componentDidMount() {
+        if(this.props.dependents.length > 0){
+            this.selectionRef.current.addEventListener('selected', e => this.updateDropDown(e))
+        }
+        if(this.props.currentPlayer.favoriteColor != undefined){
+            const logo = `./images/logo_transparent_${this.props.currentPlayer.favoriteColor}.png`
+            this.logoRef.current.src = logo
+        }else{
+            const logoList=["53B4B6", "DE8FB3", "B6F0DC", "84599D", "DB0D37", "FFBA38", "C3D8AA"]
+            const randomLogo = logoList[Math.floor(Math.random()*logoList.length)]
+            const logo =  `../images/logo_transparent_${randomLogo}.png`
+            this.logoRef.current.src = logo
+        }
     }
 
+    updateDropDown = (e) => this.props.updateCurrentPlayer(e.detail.selected)
+
+    componentDidUpdate() {
+        if(this.selectionRef.current != null && this.selectionRef.current != undefined && this.selectionRef.current.__reactEventHandlers$6d8pfj678ri != undefined && this.selectionRef.current.__reactEventHandlers$6d8pfj678ri != null){
+            this.selectionRef.current.__reactEventHandlers$6d8pfj678ri.children = [];
+        }
+        if(this.props.dependents.length > 0){
+            this.selectionRef.current.addEventListener('selected', e => this.updateDropDown(e))
+        }
+        if(this.props.currentPlayer != undefined){
+            const logo = `./images/logo_transparent_${this.props.currentPlayer.favoriteColor}.png`
+            this.logoRef.current.src = logo
+        }
+    }
 
     handleClick = e => {
         if(e.key == "/auth/login"){
             this.setState({
-            current: "/home",
-        })}else{
-            this.setState({
-                current: e.key,
-            })
+                current: "/home",
+            })}else{
+                this.setState({
+                    current: e.key,
+                })
+            }
         }
-    }
-
-
-    render() {
+        
+        
+        render() {
         return (
             <>
                 <nav>
                     <div id="topNav">
                         <div id="logoContainer" className='logo'>
-                            <img src={logo} alt="logo" className="nav-logo" />
+                            <img ref={this.logoRef} alt="logo" className="nav-logo" />
                         </div>
                         <div onClick={this.handleSelection}>
-                        {this.props.dependents.length > 0 ? <wired-combo id="combo" selected={this.props.dependents[0].id}>
+                        {this.props.dependents.length > 0 ? <wired-combo ref={this.selectionRef} id="combo" selected={this.props.dependents[0].id}>
                             {this.props.dependents.map(dependent => {
                                 return <wired-item  className="comboItem"
-                                                    selected={console.log("hello")} 
                                                     key={dependent.id} 
                                                     value={dependent.id}>
                                                         {dependent.firstName} {dependent.lastName}

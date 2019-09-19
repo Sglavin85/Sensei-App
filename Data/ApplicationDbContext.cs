@@ -31,6 +31,17 @@ namespace Sensei.Data
                 new { Id = "2", Name = "Customer", NormalizedName = "CUSTOMER" }
             );
 
+            builder.Entity<DependentGame>()
+                .HasKey(dg => new { dg.GameId, dg.DependentId });
+            builder.Entity<DependentGame>()
+                .HasOne(dg => dg.Game)
+                .WithMany(g => g.Dependents)
+                .HasForeignKey(dg => dg.GameId);
+            builder.Entity<DependentGame>()
+                .HasOne(dg => dg.Dependent)
+                .WithMany(d => d.Games)
+                .HasForeignKey(dg => dg.DependentId);
+
             #endregion
         }
 

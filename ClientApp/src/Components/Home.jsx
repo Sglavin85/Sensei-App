@@ -19,16 +19,17 @@ export default class Home extends Component {
             this.state = {
                 blobListen: false,
                 snakeListen: false,
-                game1: results[0],
-                game2: results[1],
+                game1: results[0].gameId,
+                game2: results[1].gameId,
             }
         }else if(props.currentPlayer.games != undefined && props.currentPlayer.games.length === 1 ){
+            
             const gamesArray = [ 1, 2, 3, 4]
-            gamesArray.splice(props.currentPlayer.games[0].id - 1, 1)
+            gamesArray.splice(props.currentPlayer.games[0].gameId - 1, 1)
             this.state = {
                 blobListen: false,
                 snakeListen: false,
-                game1: props.currentPlayer.games[0],
+                game1: props.currentPlayer.games[0].gameId,
                 game2: gamesArray[Math.floor(Math.random()*gamesArray.length)],
             }
         }else {
@@ -91,6 +92,19 @@ export default class Home extends Component {
         this.toggleFavClass(gameId)
     }
 
+    getFavClassName = (gameID) => {
+        if(this.currentPlayer != undefined){
+            const hasLikes = this.currentPlayer.games.find(g => gameID === g.id)
+            if(!hasLikes){
+                return ""
+            }else{
+                return "liked"
+            }
+        }else{
+            return ""
+        }
+    }
+
 
     render() {
         return (
@@ -100,7 +114,7 @@ export default class Home extends Component {
                     <div className="game g1">
                         <div className="buttonContainer">
                             <wired-icon-button id="g1btn2" class="close1" onClick={() => this.handleClose(1)}>close</wired-icon-button>
-                            <wired-icon-button ref={this.game1Ref} id="g1btn1"  onClick={() => this.handleFavorite(1)}>favorite</wired-icon-button>
+                            <wired-icon-button ref={this.game1Ref} className={this.getFavClassName(1)} id="g1btn1"  onClick={() => this.handleFavorite(1)}>favorite</wired-icon-button>
                         </div>
                         <wired-card elevation="3"
                             onMouseEnter={() => this.setState({blobListen: true})} 
@@ -113,7 +127,7 @@ export default class Home extends Component {
                     <div className="game g2">
                         <div className="buttonContainer">
                             <wired-icon-button id="g2btn2" class="close2" onClick={() => this.handleClose(2)}>close</wired-icon-button>
-                            <wired-icon-button ref={this.game2Ref} id="g2btn1" onClick={() => this.handleFavorite(2)}>favorite</wired-icon-button>
+                            <wired-icon-button ref={this.game2Ref} id="g2btn1" className={this.getFavClassName(2)} onClick={() => this.handleFavorite(2)}>favorite</wired-icon-button>
                         </div>
                         <wired-card elevation="3"
                             onMouseEnter={() => this.setState({snakeListen: true})} 
@@ -126,7 +140,7 @@ export default class Home extends Component {
                     <div className="game g3">
                         <div className="buttonContainer">
                             <wired-icon-button id="g3btn2" class="close3" onClick={() => this.handleClose(3)}>close</wired-icon-button>
-                            <wired-icon-button ref={this.game3Ref} id="g3btn1" onClick={() => this.handleFavorite(3)}>favorite</wired-icon-button>
+                            <wired-icon-button ref={this.game3Ref} id="g3btn1" className={this.getFavClassName(3)} onClick={() => this.handleFavorite(3)}>favorite</wired-icon-button>
                         </div>
                         <wired-card elevation="3">
                             <Piano />
@@ -137,7 +151,7 @@ export default class Home extends Component {
                     <div className="game g4">
                         <div className="buttonContainer">
                             <wired-icon-button id="g4btn2" class="close4" onClick={() => this.handleClose(4)}>close</wired-icon-button>
-                            <wired-icon-button ref={this.game4Ref} id="g4btn1" onClick={() => this.handleFavorite(4)}>favorite</wired-icon-button>
+                            <wired-icon-button ref={this.game4Ref} id="g4btn1" className={this.getFavClassName(4)} onClick={() => this.handleFavorite(4)}>favorite</wired-icon-button>
                         </div>
                         <wired-card elevation="3">
                                 <Spring />

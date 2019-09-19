@@ -115,9 +115,9 @@ namespace Sensei.Controllers
         }
 
         // POST: /api/Dependents/favorite
-        [Route("favorite")]
+        [Route("HailMary")]
         [HttpPost]
-        public async Task<ActionResult> PostFavorite(DependentGame fav)
+        public async Task<ActionResult> Favorite(DependentGame fav)
         {
             _context.DependentGames.Add(fav);
             await _context.SaveChangesAsync();
@@ -141,7 +141,7 @@ namespace Sensei.Controllers
             return dependent;
         }
 
-        // POST: /api/Dependents/favorite/5
+        // DELETE: /api/Dependents/favorite/5
         [Route("favorite")]
         [HttpDelete("/favorite/{id}")]
         public async Task<ActionResult<DependentGame>> DeleteFavorite(int fav)

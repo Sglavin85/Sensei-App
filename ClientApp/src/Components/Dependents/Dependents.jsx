@@ -94,16 +94,8 @@ export default class Dependents extends Component {
   }
 
   handleEditSubmit = (obj) => {
-    const token = JSON.parse(sessionStorage.getItem("Token"))
-    this.cancelModal("editModalVis")
-    API.editDependent(obj, token)
-      .then(_response => {
-        API.getAllDependents(token.token)
-          .then(repsonse => {
-            this.props.setter("depedents", repsonse)
-            // this.props.handleEditDependent(obj, repsonse)
-          })
-      })
+    this.props.handleEditDependent(obj)
+    this.cancelModal("editModalVis")  
   }
 
     render() {

@@ -48,20 +48,6 @@ namespace Sensei.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DependentGames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GameId = table.Column<int>(nullable: false),
-                    DependentId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DependentGames", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "GameTypes",
                 columns: table => new
                 {
@@ -225,22 +211,40 @@ namespace Sensei.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    TypeId = table.Column<int>(nullable: false),
-                    DependentId = table.Column<int>(nullable: true)
+                    TypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Games_Dependents_DependentId",
-                        column: x => x.DependentId,
-                        principalTable: "Dependents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Games_GameTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "GameTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DependentGames",
+                columns: table => new
+                {
+                    GameId = table.Column<int>(nullable: false),
+                    DependentId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DependentGames", x => new { x.GameId, x.DependentId });
+                    table.ForeignKey(
+                        name: "FK_DependentGames_Dependents_DependentId",
+                        column: x => x.DependentId,
+                        principalTable: "Dependents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DependentGames_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -295,14 +299,14 @@ namespace Sensei.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DependentGames_DependentId",
+                table: "DependentGames",
+                column: "DependentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Dependents_UserId",
                 table: "Dependents",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Games_DependentId",
-                table: "Games",
-                column: "DependentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_TypeId",
@@ -331,9 +335,6 @@ namespace Sensei.Migrations
                 name: "DependentGames");
 
             migrationBuilder.DropTable(
-                name: "Games");
-
-            migrationBuilder.DropTable(
                 name: "LoginViewModel");
 
             migrationBuilder.DropTable(
@@ -343,10 +344,13 @@ namespace Sensei.Migrations
                 name: "Dependents");
 
             migrationBuilder.DropTable(
-                name: "GameTypes");
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "GameTypes");
         }
     }
 }

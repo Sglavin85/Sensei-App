@@ -10,7 +10,7 @@ using Sensei.Data;
 namespace Sensei.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190918155526_initial")]
+    [Migration("20190919180822_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,15 +223,15 @@ namespace Sensei.Migrations
 
             modelBuilder.Entity("Sensei.Models.DependentGame", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("GameId");
 
                     b.Property<int>("DependentId");
 
-                    b.Property<int>("GameId");
+                    b.Property<int>("Id");
 
-                    b.HasKey("Id");
+                    b.HasKey("GameId", "DependentId");
+
+                    b.HasIndex("DependentId");
 
                     b.ToTable("DependentGames");
                 });
@@ -242,15 +242,11 @@ namespace Sensei.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DependentId");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("TypeId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DependentId");
 
                     b.HasIndex("TypeId");
 
@@ -337,12 +333,21 @@ namespace Sensei.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Sensei.Models.DependentGame", b =>
+                {
+                    b.HasOne("Sensei.Models.Dependent", "Dependent")
+                        .WithMany("Games")
+                        .HasForeignKey("DependentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sensei.Models.Game", "Game")
+                        .WithMany("Dependents")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Sensei.Models.Game", b =>
                 {
-                    b.HasOne("Sensei.Models.Dependent")
-                        .WithMany("Games")
-                        .HasForeignKey("DependentId");
-
                     b.HasOne("Sensei.Models.GameType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")

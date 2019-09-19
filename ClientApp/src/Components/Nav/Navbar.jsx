@@ -12,6 +12,7 @@ class Navbar extends Component {
         super(props);
         this.selectionRef = React.createRef();
         this.logoRef = React.createRef();
+        this.listening = false;
     }
     
     state = {
@@ -20,8 +21,9 @@ class Navbar extends Component {
     }
 
     componentDidMount() {
-        if(this.props.dependents.length > 0){
+        if(this.props.dependents.length > 0 && !this.listening){
             this.selectionRef.current.addEventListener('selected', e => this.updateDropDown(e))
+            this.listening = true
         }
         if(this.props.currentPlayer.favoriteColor != undefined){
             const logo = `./images/logo_transparent_${this.props.currentPlayer.favoriteColor}.png`
@@ -37,15 +39,20 @@ class Navbar extends Component {
     updateDropDown = (e) => this.props.updateCurrentPlayer(e.detail.selected)
 
     componentDidUpdate() {
-        if(this.selectionRef.current != null && this.selectionRef.current != undefined && this.selectionRef.current.__reactEventHandlers$6d8pfj678ri != undefined && this.selectionRef.current.__reactEventHandlers$6d8pfj678ri != null){
-            this.selectionRef.current.__reactEventHandlers$6d8pfj678ri.children = [];
-        }
-        if(this.props.dependents.length > 0){
+        if(this.props.dependents.length > 0 && !this.listening){
             this.selectionRef.current.addEventListener('selected', e => this.updateDropDown(e))
+            this.listening = true
         }
         if(this.props.currentPlayer != undefined){
             const logo = `./images/logo_transparent_${this.props.currentPlayer.favoriteColor}.png`
             this.logoRef.current.src = logo
+        }
+    }
+
+    componentWillUnmount() {
+        this.listening = false;
+        if(this.props.dependents.length > 0 && !this.listening){
+            this.selectionRef.currentPlayer.removeEventListener("selected")
         }
     }
 
@@ -72,6 +79,7 @@ class Navbar extends Component {
                         <div onClick={this.handleSelection}>
                         {this.props.dependents.length > 0 ? <wired-combo ref={this.selectionRef} id="combo" selected={this.props.dependents[0].id}>
                             {this.props.dependents.map(dependent => {
+                                // debugger
                                 return <wired-item  className="comboItem"
                                                     key={dependent.id} 
                                                     value={dependent.id}>

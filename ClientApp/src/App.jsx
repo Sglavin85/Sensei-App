@@ -21,11 +21,10 @@ class Sensei extends Component {
     state = {
         userId: "",
         dependents: [],
-        currentPlayer: {}
+        currentPlayer: {},
     }
 
     setTheme = () => {
-        console.log(this.state.currentPlayer.favoriteColor)
         let root = document.documentElement;
         root.style.setProperty("--fav-color", `#${this.state.currentPlayer.favoriteColor}`)
 
@@ -70,8 +69,16 @@ class Sensei extends Component {
                 const decocededToken = Decoder(response.token)
                 DependentAPI.getAllDependents(response.token)
                 .then(response => {
+                    console.log(response)
                     const parsedDependents = Object.values(response)
-                    this.setState({dependents: parsedDependents, userId: decocededToken.email, currentPlayer: parsedDependents[0]}, () => {this.setTheme()})
+                    if(!!parsedDependents.length){
+                        
+                        this.setState({dependents: parsedDependents, userId: decocededToken.email, currentPlayer: parsedDependents[0]}, () => {this.setTheme()})
+                    }else{
+                        this.setState({dependents: parsedDependents, userId: decocededToken.email})
+
+                    }
+                    debugger
                 })
             }
         })
@@ -112,16 +119,22 @@ class Sensei extends Component {
         this.setState({currentPlayer: player})
     }
 
-    handleEditDependent = (dependentChanged, newDepedents) => {
-        
-        if(dependentChanged.Id == this.state.currentPlayer.id)
-        {
-            let newCurrent = newDepedents.find(d => d.id === dependentChanged.Id)
-            this.setState({depedents: newDepedents, currentPlayer: newCurrent})
-        }else {
-            
-            this.setState({depedents: newDepedents})
-        }
+    handleEditDependent = (dependentChanged) => {
+        const token = JSON.parse(sessionStorage.getItem("Token"))
+        DependentAPI.editDependent(dependentChanged, token)
+      .then(_response => {
+        DependentAPI.getAllDependents(token.token)
+          .then(response => {
+            if(dependentChanged.Id == this.state.currentPlayer.id)
+            {
+                let newCurrent = response.find(d => d.id === dependentChanged.Id)
+                this.setState({dependents: response, currentPlayer: newCurrent})
+            }else {
+                
+                this.setState({dependents: response})
+            }
+            })
+        })
     }
     
     render() {

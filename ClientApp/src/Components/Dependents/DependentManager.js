@@ -11,7 +11,7 @@ const API = {
                 "Authorization": `Bearer ${token}`
             }
         })
-        .then(response => response.json())
+        .then(response => console.log(response.json()))
     },
     editDependent: function(dependent, tokenObj) {
         return fetch(`${url}/${dependent.Id}`, {
@@ -51,8 +51,8 @@ const API = {
         .then(response => response.json())
     },
     addFavorite: function(gameId, Id, tokenObj) {
-        const favGameObj = {gameID: gameId, dependentId: Id}
-        return fetch(`${url}/favorite`, {
+        const favGameObj = {gameId: gameId, dependentId: Id}
+        return fetch(`${url}/HailMary`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

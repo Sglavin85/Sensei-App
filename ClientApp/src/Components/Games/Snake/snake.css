@@ -10,7 +10,7 @@
     position: absolute;
     width: 64px;
     height: 64px;
-    background: rgb(184, 240, 220);
+    background: var(--fav-color);
     border-radius: 50%;
   }
   

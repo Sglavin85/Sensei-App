@@ -1,0 +1,24 @@
+.spring > div {
+    width: 100px;
+    height: 100px;
+    background: var(--fav-color);
+    border-radius: 50%;
+    cursor: -webkit-grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+  }
+  
+  .spring > div:active {
+    cursor: -webkit-grabbing;
+  }
+
+
+  .spring {
+      width: 100%;
+      height: 600px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }

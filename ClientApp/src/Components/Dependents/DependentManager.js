@@ -49,6 +49,32 @@ const API = {
             body: JSON.stringify(dependent)
         })
         .then(response => response.json())
+    },
+    addFavorite: function(gameId, Id, tokenObj) {
+        const favGameObj = {gameId: gameId, dependentId: Id}
+        return fetch(`${url}/HailMary`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "credentials": "include",
+                "Authorization": `Bearer ${tokenObj.token}`
+            },
+            body: JSON.stringify(favGameObj)
+        })
+        .then(response => response.json())
+    },
+    deleteFavorite: function(gameId, tokenObj) {
+        return fetch(`${url}/favorite/${gameId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "credentials": "include",
+                "Authorization": `Bearer ${tokenObj.token}`
+            }
+        })
+        .then(response => response.json())
     }
 }
 

@@ -1,4 +1,8 @@
 #head {
     height: 160px;
-    background-color: rgb(97, 97, 97);
+    background-color: rgb(150, 150, 150);
 }
+
+:root {
+    --fav-color: #B6F0DC;
+  }

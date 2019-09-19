@@ -11,5 +11,6 @@ namespace Sensei.Models
         public string Name { get; set; }
         public int TypeId { get; set; }
         public GameType Type { get; set; }
+        public virtual ICollection<DependentGame> DependentGames { get; set; }
      }
 }

@@ -94,15 +94,8 @@ export default class Dependents extends Component {
   }
 
   handleEditSubmit = (obj) => {
-    const token = JSON.parse(sessionStorage.getItem("Token"))
-    this.cancelModal("editModalVis")
-    API.editDependent(obj, token)
-      .then(_response => {
-        API.getAllDependents(token.token)
-          .then(response => {
-            this.props.setter("dependents", response)
-          })
-      })
+    this.props.handleEditDependent(obj)
+    this.cancelModal("editModalVis")  
   }
 
     render() {
@@ -135,6 +128,7 @@ export default class Dependents extends Component {
                         vis={this.state.editModalVis}
                         submit={this.handleEditSubmit}
                         cancel={this.cancelModal}
+                        userId={this.props.userId}
                         record={this.state.recordToEdit}
                     /> : null} 
 

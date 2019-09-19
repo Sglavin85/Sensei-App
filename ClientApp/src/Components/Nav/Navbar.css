@@ -14,19 +14,41 @@
     font-weight: 700;
 }
 
+.nav-link::after {
+    background-color: rgb(150, 150, 150);
+}
 .logo {
     margin-right: 20px;
 }
 
+#NavMenu {
+    width: 490px;
+}
+
 #linksContainer {
-    height: 100px;
-    margin-top: 50px;
+    max-height: 83px;
+    margin-top: 38px;
+    margin-right: 10px;
+    width: 540px;
+    padding-top: 20px;
+    padding-left: 25px;
 }
 
 #linksContainer > :first-child {
-    background-color: rgb(97, 97, 97);
+    background-color: rgb(150, 150, 150);
 }
 
 #linksContainer > :first-child > li > a {
-    color: #A7F2D7;
+    color: var(--fav-color);
+}
+
+#combo {
+    margin-top: 40px;
+    left: 330px;
+    width: auto;
+    /* background-color:  rgb(150, 150, 150); */
+    --wired-item-selected-color:  var(--fav-color);
+    --wired-item-selected-bg: rgb(150, 150, 150);
+    font-weight: 700;
+    font-size: 1.2em;
 }

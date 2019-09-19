@@ -48,20 +48,6 @@ namespace Sensei.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DependentGames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GameId = table.Column<int>(nullable: false),
-                    DependentId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DependentGames", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "GameTypes",
                 columns: table => new
                 {
@@ -204,7 +190,8 @@ namespace Sensei.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: false),
-                    Gender = table.Column<string>(nullable: true)
+                    Gender = table.Column<string>(nullable: true),
+                    FavoriteColor = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,6 +220,32 @@ namespace Sensei.Migrations
                         name: "FK_Games_GameTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "GameTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DependentGames",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GameId = table.Column<int>(nullable: false),
+                    DependentId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DependentGames", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DependentGames_Dependents_DependentId",
+                        column: x => x.DependentId,
+                        principalTable: "Dependents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DependentGames_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -287,6 +300,16 @@ namespace Sensei.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DependentGames_DependentId",
+                table: "DependentGames",
+                column: "DependentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DependentGames_GameId",
+                table: "DependentGames",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Dependents_UserId",
                 table: "Dependents",
                 column: "UserId");
@@ -318,16 +341,16 @@ namespace Sensei.Migrations
                 name: "DependentGames");
 
             migrationBuilder.DropTable(
-                name: "Dependents");
-
-            migrationBuilder.DropTable(
-                name: "Games");
-
-            migrationBuilder.DropTable(
                 name: "LoginViewModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Dependents");
+
+            migrationBuilder.DropTable(
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

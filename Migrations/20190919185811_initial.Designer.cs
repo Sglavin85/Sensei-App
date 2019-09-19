@@ -10,7 +10,7 @@ using Sensei.Data;
 namespace Sensei.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190916145320_initial")]
+    [Migration("20190919185811_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,6 +204,8 @@ namespace Sensei.Migrations
 
                     b.Property<int>("Age");
 
+                    b.Property<string>("FavoriteColor");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("Gender");
@@ -230,6 +232,10 @@ namespace Sensei.Migrations
                     b.Property<int>("GameId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DependentId");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("DependentGames");
                 });
@@ -329,6 +335,19 @@ namespace Sensei.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Sensei.Models.DependentGame", b =>
+                {
+                    b.HasOne("Sensei.Models.Dependent", "Dependent")
+                        .WithMany("DependentGames")
+                        .HasForeignKey("DependentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sensei.Models.Game", "Game")
+                        .WithMany("DependentGames")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sensei.Models.Game", b =>

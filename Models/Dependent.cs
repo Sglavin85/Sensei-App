@@ -14,6 +14,8 @@ namespace Sensei.Models
         public string LastName { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
+        public string FavoriteColor { get; set; }
         public IdentityUser User { get; set; }
+        public virtual ICollection<DependentGame> DependentGames { get; set;  }
     }
 }

@@ -13,7 +13,8 @@ export default class CreateModal extends Component {
             firstName: "",
             lastName: "",
             age: "",
-            gender: "male"
+            gender: "male",
+            favoriteColor: "B6F0DC"
         }
     }
 
@@ -30,6 +31,11 @@ export default class CreateModal extends Component {
     handleGenderChoice = (evt) => {
         console.log(evt)
         this.setState({ gender: evt })
+    }
+
+    handleColorChoice = (evt) => {
+        console.log(evt)
+        this.setState({ favoriteColor: evt })
     }
 
     render() {
@@ -69,6 +75,17 @@ export default class CreateModal extends Component {
                                 <Select id="gender" defaultValue="male" onChange={this.handleGenderChoice}>
                                     <Option value="male">Male</Option>
                                     <Option value="female">Female</Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item>
+                                <Select id="favoriteColor" defaultValue="B6F0DC" placeholder="Choose a Color" onChange={this.handleColorChoice}>
+                                    <Option value="53B4B6">Blue</Option>
+                                    <Option value="DE8FB3">Pink</Option>
+                                    <Option value="B6F0DC">Teal</Option>
+                                    <Option value="84599D">Purple</Option>
+                                    <Option value="DB0D37">Red</Option>
+                                    <Option value="FFBA38">Yellow</Option>
+                                    <Option value="C3D8AA">Green</Option>
                                 </Select>
                             </Form.Item>
                         </Form>

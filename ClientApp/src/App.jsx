@@ -44,6 +44,7 @@ class Sensei extends Component {
             const decocededToken = Decoder(token.token)
             DependentAPI.getAllDependents(token.token)
             .then(response => {
+                console.log(response)
                 const parsedDependents = Object.values(response)
 
                 if(parsedDependents.length > 0){
@@ -78,7 +79,6 @@ class Sensei extends Component {
                         this.setState({dependents: parsedDependents, userId: decocededToken.email})
 
                     }
-                    debugger
                 })
             }
         })
@@ -104,14 +104,14 @@ class Sensei extends Component {
     }
 
     addFavorite = (gameToAdd) => {
-        const gamesArray = [...this.state.currentPlayer.games, gameToAdd]
+        const gamesArray = [...this.state.currentPlayer.dependentGames, gameToAdd]
         const player = {...this.state.currentPlayer}
         player.games = gamesArray
         this.setState({currentPlayer: player})
     }
 
     removeFavorite = (gameToRemove) => {
-        const gamesArray = [...this.state.currentPlayer.games]
+        const gamesArray = [...this.state.currentPlayer.dependentGames]
         const removedGame = gamesArray.findIndex(g => g.id === gameToRemove.id)
         gamesArray.splice(removedGame, 1)
         const player = {...this.state.currentPlayer}

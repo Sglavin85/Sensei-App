@@ -31,22 +31,20 @@ namespace Sensei.Data
                 new { Id = "2", Name = "Customer", NormalizedName = "CUSTOMER" }
             );
 
-            builder.Entity<DependentGame>()
-                .HasKey(dg => new { dg.GameId, dg.DependentId });
+
             builder.Entity<DependentGame>()
                 .HasOne(dg => dg.Game)
-                .WithMany(g => g.Dependents)
+                .WithMany(g => g.DependentGames)
                 .HasForeignKey(dg => dg.GameId);
             builder.Entity<DependentGame>()
                 .HasOne(dg => dg.Dependent)
-                .WithMany(d => d.Games)
+                .WithMany(d => d.DependentGames)
                 .HasForeignKey(dg => dg.DependentId);
 
             #endregion
         }
 
 
-        public DbSet<Sensei.Models.ViewModels.LoginViewModel> LoginViewModel { get; set; }
     }
 
 }

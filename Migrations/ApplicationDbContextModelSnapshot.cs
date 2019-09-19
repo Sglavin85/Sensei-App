@@ -221,15 +221,19 @@ namespace Sensei.Migrations
 
             modelBuilder.Entity("Sensei.Models.DependentGame", b =>
                 {
-                    b.Property<int>("GameId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("DependentId");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("GameId");
 
-                    b.HasKey("GameId", "DependentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DependentId");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("DependentGames");
                 });
@@ -334,12 +338,12 @@ namespace Sensei.Migrations
             modelBuilder.Entity("Sensei.Models.DependentGame", b =>
                 {
                     b.HasOne("Sensei.Models.Dependent", "Dependent")
-                        .WithMany("Games")
+                        .WithMany("DependentGames")
                         .HasForeignKey("DependentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sensei.Models.Game", "Game")
-                        .WithMany("Dependents")
+                        .WithMany("DependentGames")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

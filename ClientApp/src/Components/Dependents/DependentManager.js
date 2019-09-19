@@ -11,7 +11,7 @@ const API = {
                 "Authorization": `Bearer ${token}`
             }
         })
-        .then(response => console.log(response.json()))
+        .then(response => response.json())
     },
     editDependent: function(dependent, tokenObj) {
         return fetch(`${url}/${dependent.Id}`, {

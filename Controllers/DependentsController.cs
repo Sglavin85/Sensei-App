@@ -38,7 +38,8 @@ namespace Sensei.Controllers
                 IEnumerable<Claim> claims = identity.Claims;
                 Claim userClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
                 var user = await _userManager.FindByIdAsync(userClaim.Value);
-            return await _context.Dependents.Where(d => d.UserId == user.Id).Include(d => d.Games).ToListAsync();
+                var reply = await _context.Dependents.Include(d => d.DependentGames).Where(d => d.UserId == user.Id).ToListAsync();
+                return reply;
             } else
             {
                 return NotFound();

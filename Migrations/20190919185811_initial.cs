@@ -228,13 +228,14 @@ namespace Sensei.Migrations
                 name: "DependentGames",
                 columns: table => new
                 {
-                    GameId = table.Column<int>(nullable: false),
-                    DependentId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GameId = table.Column<int>(nullable: false),
+                    DependentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DependentGames", x => new { x.GameId, x.DependentId });
+                    table.PrimaryKey("PK_DependentGames", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DependentGames_Dependents_DependentId",
                         column: x => x.DependentId,
@@ -302,6 +303,11 @@ namespace Sensei.Migrations
                 name: "IX_DependentGames_DependentId",
                 table: "DependentGames",
                 column: "DependentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DependentGames_GameId",
+                table: "DependentGames",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Dependents_UserId",

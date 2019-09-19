@@ -116,7 +116,6 @@ class Sensei extends Component {
         
         if(dependentChanged.Id == this.state.currentPlayer.id)
         {
-            
             let newCurrent = newDepedents.find(d => d.id === dependentChanged.Id)
             this.setState({depedents: newDepedents, currentPlayer: newCurrent})
         }else {
@@ -168,7 +167,11 @@ class Sensei extends Component {
 
                     <Route exact path="/profile" render={(props) => {
                         if (this.isAuthenticated()) {
-                            return <Depedents {...props} handleEditDependent={this.handleEditDependent} dependents={this.state.dependents} userId={this.state.userId} setter={this.updateState} />
+                            return <Depedents {...props} 
+                                                handleEditDependent={this.handleEditDependent} 
+                                                dependents={this.state.dependents} 
+                                                userId={this.state.userId} 
+                                                setter={this.updateState} />
                         } else {
                             return <Redirect to="/auth/login" {...props}
                             />

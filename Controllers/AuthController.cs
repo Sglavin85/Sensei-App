@@ -51,8 +51,8 @@ namespace JwtAuthentication.Controllers
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var claims = new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Id)
                 };
                 var signinKey = new SymmetricSecurityKey(
                   Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));

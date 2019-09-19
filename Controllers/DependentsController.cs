@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sensei.Data;
@@ -18,16 +20,30 @@ namespace Sensei.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public DependentsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public DependentsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/Dependents
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Dependent>>> GetDependents()
         {
-            return await _context.Dependents.ToListAsync();
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                Claim userClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                var user = await _userManager.FindByIdAsync(userClaim.Value);
+            return await _context.Dependents.Where(d => d.UserId == user.Id).Include(d => d.Games).ToListAsync();
+            } else
+            {
+                return NotFound();
+            }
+
         }
 
         // GET: api/Dependents/5
@@ -42,6 +58,20 @@ namespace Sensei.Controllers
             }
 
             return dependent;
+        }
+
+        // GET: api/Dependents/favorite/5
+        [Route("favorite")]
+        [HttpGet("/favorite/{id}")]
+        public async Task<ActionResult<DependentGame>> GetFavorite(int id)
+        {
+            var game = await _context.DependentGames.FindAsync(id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return game;
         }
 
         // PUT: api/Dependents/5
@@ -84,6 +114,17 @@ namespace Sensei.Controllers
             return CreatedAtAction("GetDependent", new { id = dependent.Id }, dependent);
         }
 
+        // POST: /api/Dependents/favorite
+        [Route("favorite")]
+        [HttpPost]
+        public async Task<ActionResult> PostFavorite(DependentGame fav)
+        {
+            _context.DependentGames.Add(fav);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetFavorite", new { id = fav.Id }, fav);
+        }
+
         // DELETE: api/Dependents/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Dependent>> DeleteDependent(int id)
@@ -99,6 +140,24 @@ namespace Sensei.Controllers
 
             return dependent;
         }
+
+        // POST: /api/Dependents/favorite/5
+        [Route("favorite")]
+        [HttpDelete("/favorite/{id}")]
+        public async Task<ActionResult<DependentGame>> DeleteFavorite(int fav)
+        {
+            var favoriteGame = await _context.DependentGames.FindAsync(fav);
+            if (favoriteGame == null)
+            {
+                return NotFound();
+            }
+            _context.DependentGames.Remove(favoriteGame);
+            await _context.SaveChangesAsync();
+
+            return favoriteGame;
+        }
+
+
 
         private bool DependentExists(int id)
         {

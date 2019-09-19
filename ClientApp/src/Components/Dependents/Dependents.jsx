@@ -100,8 +100,8 @@ export default class Dependents extends Component {
       .then(_response => {
         API.getAllDependents(token.token)
           .then(repsonse => {
-            
-            this.props.handleEditDependent(obj, repsonse)
+            this.props.setter("depedents", repsonse)
+            // this.props.handleEditDependent(obj, repsonse)
           })
       })
   }
